@@ -1,0 +1,19 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "chrome",
+      "request": "launch",
+      "name": "Chrome: frontend (Vite)",
+      "url": "http://127.0.0.1:5173",
+      "webRoot": "${workspaceFolder}"
+    },
+    {
+      "type": "msedge",
+      "request": "launch",
+      "name": "Edge: frontend (Vite)",
+      "url": "http://127.0.0.1:5173",
+      "webRoot": "${workspaceFolder}"
+    }
+  ]
+}

@@ -1,0 +1,19 @@
+[
+  {
+    "Name": "Debug (Backend + Frontend)",
+    "Projects": [
+      {
+        "Path": "backend\\src\\SalesDashboard.Api\\SalesDashboard.Api.csproj",
+        "Action": "Start"
+      },
+      {
+        "Path": "frontend\\frontend.esproj",
+        "Action": "None"
+      },
+      {
+        "Path": "docker-compose.dcproj",
+        "Action": "None"
+      }
+    ]
+  }
+]

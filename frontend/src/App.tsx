@@ -14,7 +14,9 @@ const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       staleTime: 30_000,
-      retry: 1,
+      // F5: браузер может открыться чуть раньше API/Vite — несколько повторов снимают пустой экран.
+      retry: 4,
+      retryDelay: (attempt) => Math.min(500 * 2 ** attempt, 4_000),
       refetchOnWindowFocus: false,
     },
   },

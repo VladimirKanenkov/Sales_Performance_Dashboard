@@ -8,7 +8,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var connectionString = builder.Configuration.GetConnectionString("Default")
-    ?? "Host=localhost;Port=5432;Database=sales_dashboard;Username=sales;Password=sales";
+    ?? "Host=127.0.0.1;Port=15432;Database=sales_dashboard;Username=sales;Password=sales";
 
 builder.Services.AddDbContext<SalesDbContext>(options =>
     options.UseNpgsql(connectionString));

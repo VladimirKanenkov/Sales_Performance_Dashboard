@@ -23,3 +23,7 @@ Cursor Agent (Composer) + локальные CLI: .NET 8 SDK, Docker, Node 24, G
 ## Как проверяли итоговый код
 
 `dotnet test` (KPI, период, рейтинг/ничья, DateRange), `npm test` (пресеты, сортировка рейтинга, error/empty), `npm run build`, `docker compose up --build` и проверка `/api/health` + UI на `:8080`.
+
+## Решение по отладке в Visual Studio
+
+Выбран **подход A + SpaProxy**: корневой `SalesDashboard.sln`, `frontend.esproj`, F5 на `SalesDashboard.Api` поднимает Vite через `Microsoft.AspNetCore.SpaProxy` (Multi Launch Start для `.esproj` на этой машине не стартовал frontend). Порт API `5080`, Vite `host: 127.0.0.1:5173`. Host-порт Docker Postgres **15432** — на `5432`/`5433` уже слушали локальный PostgreSQL 16/12 и KOMPAS. `docker compose up --build` для демо (§14) не затронут (api↔db по внутренней сети).

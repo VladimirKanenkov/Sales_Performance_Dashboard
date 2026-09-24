@@ -13,7 +13,7 @@ docker compose up --build
 Сервисы:
 - **web** — React UI (nginx), порт `8080`
 - **api** — ASP.NET Core 8, порт `5080` (также через `/api` на `8080`)
-- **db** — PostgreSQL 16, порт `5432` (user/password/db: `sales` / `sales` / `sales_dashboard`)
+- **db** — PostgreSQL 16, host-порт `15432` → контейнер `5432` (user/password/db: `sales` / `sales` / `sales_dashboard`). Высокий порт, чтобы не конфликтовать с локальным PostgreSQL/KOMPAS на `5432`/`5433`.
 
 При старте API автоматически:
 1. ждёт готовности Postgres;
@@ -28,7 +28,58 @@ dotnet run --project backend/src/SalesDashboard.Api
 cd frontend && npm install && npm run dev
 ```
 
-UI: [http://localhost:5173](http://localhost:5173) (proxy `/api` → `:5080`).
+UI: [http://localhost:5173](http://localhost:5173) (proxy `/api` → `:5080`).  
+API слушает `http://localhost:5080` (профиль `http` в `launchSettings.json`), БД — `127.0.0.1:15432`.
+
+Если на машине уже установлены Windows PostgreSQL / KOMPAS на `5432`/`5433`, Docker DB публикуется на **15432** (см. `docker-compose.yml`).
+
+## Запуск в Visual Studio
+
+Для **сдачи и демо** достаточно `docker compose up --build`. Visual Studio нужен только для локальной отладки.
+
+### Требования
+
+- Visual Studio 2026 (или VS 2022 17.11+) с workload’ами ASP.NET и Node.js / JavaScript
+- Node.js, Docker Desktop
+- Preview (если ещё не GA): `Tools > Options > Environment > Preview Features > Enable Multi Launch Profiles`
+- Отладка JS: `Tools > Options > Debugging > General > Enable JavaScript debugging for ASP.NET (Chrome and Edge)`
+
+### Как открыть и запустить
+
+1. Откройте корневой [`SalesDashboard.sln`](SalesDashboard.sln).
+2. Перед F5 поднимите только БД: `docker compose up db -d` (Postgres на host-порту **15432**).
+3. Startup project: **SalesDashboard.Api**, профиль **http** (не https — иначе VS может открыть лишние URL).
+4. F5: SpaProxy ждёт Vite, затем открывает **одно** окно. Не задавайте вручную `launchUrl` на `:5173` — браузер откроется сам после готовности SPA.
+5. UI: `http://127.0.0.1:5173`. Запросы `/api` идут через Vite proxy на backend.
+
+### CORS и прокси
+
+- Frontend использует относительные `/api/...` и **Vite proxy** → `http://localhost:5080`.
+- В Development CORS на API разрешает любой origin (запасной путь, если вызывать API напрямую).
+
+### Что отлаживается
+
+| Компонент | F5 | Breakpoints |
+| --- | --- | --- |
+| Backend (C#) | Start | Visual Studio |
+| Frontend (`.tsx`) | Start via `.esproj` | VS + `frontend/.vscode/launch.json` (Chrome/Edge) |
+| PostgreSQL | вручную `docker compose up db -d` | — |
+| Полный Docker stack | не из этого профиля | используйте CLI `docker compose up --build` |
+
+### Fallback без Multi Launch Profiles
+
+```bash
+docker compose up db -d
+```
+
+В VS запустите только `SalesDashboard.Api`, в терминале — `cd frontend && npm run dev`. Отладку frontend ведите в браузере (Chrome DevTools).
+
+### Известные ограничения
+
+- Профиль F5 **не** заменяет production-демо на `:8080`.
+- `docker-compose.dcproj` в Solution Explorer только для обзора; CLI-entrypoint — корневой `docker-compose.yml` без override.
+- Backend-only solution [`backend/SalesDashboard.sln`](backend/SalesDashboard.sln) по-прежнему удобен для `dotnet test`.
+- Один браузер при F5: Vite поднимает SpaProxy; `ProjectReference` на `.esproj` убран (иначе VS открывал второе окно через `launch.json` на `localhost`).
 
 ## Стек
 
