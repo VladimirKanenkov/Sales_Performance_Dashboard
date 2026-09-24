@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "hooks": {
+    "beforeSubmitPrompt": [
+      {
+        "command": "C:/Program Files/Git/bin/bash.exe .cursor/hooks/save-prompt.sh",
+        "failClosed": false
+      }
+    ]
+  }
+}
