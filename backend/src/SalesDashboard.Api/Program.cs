@@ -23,13 +23,14 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+// Swagger доступен и в Docker (Production): открыть http://localhost:5080/swagger
+app.UseSwagger();
+app.UseSwaggerUI();
 
 app.UseCors();
+
+// Корень API без UI — сразу в Swagger, иначе браузер на :5080 показывает пустой 404.
+app.MapGet("/", () => Results.Redirect("/swagger"));
 
 await using (var scope = app.Services.CreateAsyncScope())
 {
