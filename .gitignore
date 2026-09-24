@@ -2,6 +2,7 @@
 **/bin/
 **/obj/
 **/.vs/
+**/*.http
 
 # Node
 **/node_modules/
@@ -20,3 +21,17 @@
 
 # Logs
 *.log
+
+# Temp / scratch
+tmp_*
+*.csx
+*.tmp
+*.bak
+
+# Assignment / local docs (не часть приложения)
+*.docx
+*.doc
+
+# Vite scaffold leftovers (документация — корневой README; App.css не используется)
+frontend/README.md
+frontend/src/App.css
