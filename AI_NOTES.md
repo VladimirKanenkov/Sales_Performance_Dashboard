@@ -10,7 +10,7 @@ Cursor Agent (Composer) + локальные CLI: .NET 8 SDK, Docker, Node 24, G
 
 ## Что спроектировано самостоятельно
 
-Бизнес-правила Paid/Refunded/Cancelled, формула предыдущего периода, выбор стека (TanStack Query + Tailwind + Recharts + Framer Motion без глобального store), контракт REST, индексы PostgreSQL, отказ от Clean Architecture/MediatR для одного bounded context.
+Бизнес-правила Paid/Refunded/Cancelled, формула предыдущего периода, выбор стека (TanStack Query + Tailwind + Recharts + Framer Motion без глобального store), контракт REST, индексы PostgreSQL, отказ от Clean Architecture/MediatR для одного bounded context. Правила коммитов (Conventional Commits на русском, атомарные коммиты по плану) и комментариев (XML-doc / JSDoc на русском) заданы самостоятельно и сохранены в `.cursor/rules/commits-and-comments.mdc`. Переписывание сообщений существующих коммитов и XML-doc/JSDoc в коде сделаны по запросу; тексты комментариев предложил AI по этим правилам.
 
 ## Где AI ускорил работу
 
