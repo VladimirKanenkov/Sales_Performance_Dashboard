@@ -6,6 +6,7 @@
     <ProjectGuid>{C0A1B2D3-E4F5-6789-ABCD-EF0123456789}</ProjectGuid>
     <DockerLaunchAction>LaunchBrowser</DockerLaunchAction>
     <DockerServiceUrl>{Scheme}://localhost:{ServicePort}</DockerServiceUrl>
+    <!-- Только браузер на web. Без привязки Api к Containers.Tools — иначе Fast Mode ломает DNS. -->
     <DockerServiceName>web</DockerServiceName>
   </PropertyGroup>
   <ItemGroup>

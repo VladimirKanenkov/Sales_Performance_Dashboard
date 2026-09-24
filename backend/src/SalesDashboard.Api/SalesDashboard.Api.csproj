@@ -8,6 +8,11 @@
     <SpaRoot>..\..\..\frontend\</SpaRoot>
     <SpaProxyLaunchCommand>npm run dev</SpaProxyLaunchCommand>
     <SpaProxyServerUrl>http://127.0.0.1:5173</SpaProxyServerUrl>
+    <!--
+      Не связываем Api с docker-compose.dcproj через Containers.Tools:
+      VS Fast Mode (vs.debug.g.yml) отключает Networks у api → DNS Host=db падает,
+      nginx даёт 502 на :8080. Отладка C#: профиль http. Полный стек: CLI или dcproj без debuggee.
+    -->
   </PropertyGroup>
 
   <ItemGroup>

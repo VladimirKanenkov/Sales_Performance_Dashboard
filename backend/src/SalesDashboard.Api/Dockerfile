@@ -1,13 +1,21 @@
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+WORKDIR /app
+EXPOSE 8080
+ENV ASPNETCORE_URLS=http://+:8080
+
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY SalesDashboard.Api.csproj .
 RUN dotnet restore
 COPY . .
-RUN dotnet publish -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet build SalesDashboard.Api.csproj -c $BUILD_CONFIGURATION -o /app/build
 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+FROM build AS publish
+ARG BUILD_CONFIGURATION=Release
+RUN dotnet publish SalesDashboard.Api.csproj -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
+
+FROM base AS final
 WORKDIR /app
-ENV ASPNETCORE_URLS=http://+:8080
-EXPOSE 8080
-COPY --from=build /app/publish .
+COPY --from=publish /app/publish .
 ENTRYPOINT ["dotnet", "SalesDashboard.Api.dll"]
